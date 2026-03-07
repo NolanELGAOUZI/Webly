@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Renard Dépannage — Plomberie & Électricité Cachan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy:    #0d1b2a;
+      --navy2:   #1b2d42;
+      --blue:    #1e6bb8;
+      --blue-lt: #3a8fd4;
+      --orange:  #e85d26;
+      --orange-lt: #f07848;
+      --white:   #ffffff;
+      --off:     #f4f6f9;
+      --mid:     #6b7a8d;
+      --light:   #c8d0db;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--navy);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── BANDEAU URGENCE ── */
+    .urgence-bar {
+      background: var(--orange);
+      color: var(--white);
+      text-align: center;
+      padding: .55rem 1rem;
+      font-size: .78rem;
+      letter-spacing: .08em;
+      font-weight: 500;
+    }
+    .urgence-bar a { color: var(--white); font-weight: 700; text-decoration: underline; }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--navy);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 5rem;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 20px rgba(13,27,42,.3);
+    }
+    .nav-logo { display: flex; align-items: center; gap: .8rem; text-decoration: none; }
+    .logo-icon {
+      width: 40px; height: 40px;
+      background: var(--orange); display: flex; align-items: center;
+      justify-content: center; font-size: 1.2rem;
+    }
+    .logo-text {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 1.1rem; color: var(--white); line-height: 1.1;
+    }
+    .logo-sub { font-size: .65rem; color: rgba(255,255,255,.4); letter-spacing: .15em; font-weight: 400; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; align-items: center; }
+    .nav-links a {
+      text-decoration: none; color: rgba(255,255,255,.6);
+      font-size: .8rem; letter-spacing: .1em; text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-phone {
+      display: flex; align-items: center; gap: .6rem;
+      background: var(--orange); color: var(--white) !important;
+      padding: .55rem 1.2rem; font-weight: 500 !important;
+      opacity: 1 !important;
+    }
+    .nav-phone:hover { background: var(--orange-lt) !important; color: var(--white) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--navy);
+      padding: 5rem 5rem 0;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: end;
+      overflow: hidden; position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: 0; right: 0; bottom: 0;
+      width: 55%; background: var(--navy2);
+      clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
+    }
+    .hero-left { position: relative; z-index: 2; padding-bottom: 5rem; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(232,93,38,.15); border: 1px solid rgba(232,93,38,.35);
+      color: var(--orange-lt); padding: .35rem .9rem;
+      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+      margin-bottom: 1.8rem;
+    }
+    .hero-badge::before { content: '●'; font-size: .5rem; animation: blink 1.5s infinite; }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.2; } }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(2.8rem, 5vw, 5rem); line-height: 1;
+      color: var(--white); margin-bottom: 1.5rem;
+    }
+    .hero-title .accent { color: var(--orange); }
+    .hero-title .thin { font-weight: 400; color: rgba(255,255,255,.5); }
+    .hero-text { color: rgba(255,255,255,.55); font-size: .95rem; line-height: 1.8; max-width: 420px; margin-bottom: 2.5rem; }
+
+    .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .85rem 1.8rem; font-size: .8rem;
+      letter-spacing: .1em; text-transform: uppercase;
+      text-decoration: none; font-weight: 500; transition: all .2s; cursor: pointer; border: none;
+    }
+    .btn-primary { background: var(--orange); color: var(--white); }
+    .btn-primary:hover { background: var(--orange-lt); transform: translateY(-2px); }
+    .btn-outline { border: 1px solid rgba(255,255,255,.25); color: var(--white); background: transparent; }
+    .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,.07); }
+
+    .trust-row {
+      display: flex; gap: 2rem; margin-top: 3rem;
+      padding-top: 2rem; border-top: 1px solid rgba(255,255,255,.08);
+      flex-wrap: wrap;
+    }
+    .trust-item { display: flex; align-items: center; gap: .6rem; }
+    .trust-icon { font-size: 1.1rem; }
+    .trust-text { font-size: .75rem; color: rgba(255,255,255,.5); }
+    .trust-text strong { color: rgba(255,255,255,.85); display: block; }
+
+    .hero-right {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; gap: 1rem;
+      padding-bottom: 4rem;
+    }
+    .hero-img {
+      width: 100%; border-radius: 2px; overflow: hidden;
+      aspect-ratio: 4/3;
+    }
+    .hero-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .dispo-card {
+      background: var(--orange); padding: 1.4rem 1.8rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .dispo-title { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--white); font-size: 1rem; }
+    .dispo-sub { font-size: .75rem; color: rgba(255,255,255,.75); margin-top: .2rem; }
+    .dispo-num { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--white); }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--blue); padding: 2.5rem 5rem;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+    }
+    .stat-item { text-align: center; border-right: 1px solid rgba(255,255,255,.15); padding: 0 1rem; }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--white); }
+    .stat-label { font-size: .72rem; color: rgba(255,255,255,.6); letter-spacing: .12em; text-transform: uppercase; margin-top: .3rem; }
+
+    /* ── SERVICES ── */
+    #services { padding: 6rem 5rem; background: var(--off); }
+    .section-label { font-size: .65rem; letter-spacing: .35em; text-transform: uppercase; color: var(--orange); margin-bottom: .7rem; }
+    .section-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 3.5vw, 3rem); font-weight: 700; line-height: 1.1; margin-bottom: 3.5rem; }
+    .section-title span { color: var(--blue); }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .service-card {
+      background: var(--white); padding: 2.2rem;
+      border-bottom: 3px solid transparent;
+      transition: border-color .25s, box-shadow .25s, transform .25s;
+      box-shadow: 0 2px 12px rgba(13,27,42,.06);
+    }
+    .service-card:hover {
+      border-bottom-color: var(--orange);
+      box-shadow: 0 8px 30px rgba(13,27,42,.1);
+      transform: translateY(-3px);
+    }
+    .s-icon { font-size: 2rem; margin-bottom: 1.1rem; }
+    .s-name { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: .6rem; }
+    .s-desc { font-size: .85rem; color: var(--mid); line-height: 1.7; margin-bottom: 1.2rem; }
+    .s-link { font-size: .75rem; color: var(--blue); letter-spacing: .1em; text-transform: uppercase; text-decoration: none; font-weight: 500; }
+    .s-link:hover { color: var(--orange); }
+
+    /* ── URGENCE SECTION ── */
+    .urgence-section {
+      background: var(--navy);
+      padding: 5rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    }
+    .urgence-section h2 {
+      font-family: 'Syne', sans-serif; font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 800; color: var(--white); line-height: 1.05;
+      margin-bottom: 1.2rem;
+    }
+    .urgence-section h2 .accent { color: var(--orange); }
+    .urgence-section p { color: rgba(255,255,255,.55); line-height: 1.8; margin-bottom: 2rem; font-size: .95rem; }
+    .urgence-steps { display: flex; flex-direction: column; gap: 1rem; }
+    .step {
+      display: flex; align-items: flex-start; gap: 1.2rem;
+      padding: 1.2rem; background: rgba(255,255,255,.05);
+      border-left: 3px solid var(--orange);
+    }
+    .step-num { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--orange); line-height: 1; flex-shrink: 0; }
+    .step-content { }
+    .step-title { font-weight: 500; color: var(--white); margin-bottom: .2rem; font-size: .9rem; }
+    .step-sub { font-size: .8rem; color: rgba(255,255,255,.4); }
+
+    /* ── ZONE D'INTERVENTION ── */
+    #zone { padding: 6rem 5rem; }
+    .zone-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .zone-map {
+      background: var(--off); aspect-ratio: 1;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      border: 2px solid var(--light);
+    }
+    .map-placeholder {
+      text-align: center; color: var(--mid);
+    }
+    .map-pin { font-size: 4rem; display: block; margin-bottom: 1rem; }
+    .zone-cities { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.5rem; }
+    .city-tag {
+      background: var(--off); border: 1px solid var(--light);
+      padding: .35rem .9rem; font-size: .78rem; color: var(--navy);
+    }
+    .city-tag.main { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
+    /* ── AVIS ── */
+    #avis { background: var(--off); padding: 6rem 5rem; }
+    .avis-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
+    .rating-big { text-align: right; }
+    .rating-num { font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800; color: var(--navy); line-height: 1; }
+    .rating-stars { color: #f59e0b; font-size: 1.2rem; }
+    .rating-count { font-size: .75rem; color: var(--mid); margin-top: .3rem; }
+    .avis-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .avis-card {
+      background: var(--white); padding: 1.8rem;
+      box-shadow: 0 2px 12px rgba(13,27,42,.06);
+      border-top: 3px solid var(--blue);
+    }
+    .avis-stars { color: #f59e0b; font-size: .9rem; margin-bottom: .8rem; }
+    .avis-text { font-size: .88rem; color: var(--mid); line-height: 1.7; font-style: italic; margin-bottom: 1.2rem; }
+    .avis-author { font-size: .8rem; font-weight: 500; color: var(--navy); }
+    .avis-info { font-size: .72rem; color: var(--light); margin-top: .2rem; }
+
+    /* ── CONTACT ── */
+    #contact { padding: 6rem 5rem; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .contact-form { display: flex; flex-direction: column; gap: .9rem; }
+    .contact-form input, .contact-form select, .contact-form textarea {
+      background: var(--off); border: 1px solid var(--light);
+      color: var(--navy); padding: .85rem 1.1rem;
+      font-family: 'Inter', sans-serif; font-size: .88rem;
+      outline: none; transition: border-color .2s; width: 100%;
+      resize: vertical;
+    }
+    .contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus { border-color: var(--blue); }
+    .contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--light); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+    .btn-submit {
+      background: var(--navy); color: var(--white); border: none;
+      padding: 1rem; font-family: 'Inter', sans-serif; font-size: .8rem;
+      letter-spacing: .15em; text-transform: uppercase; cursor: pointer;
+      transition: background .2s; font-weight: 500;
+    }
+    .btn-submit:hover { background: var(--blue); }
+
+    .contact-info { }
+    .contact-info p { font-size: .9rem; color: var(--mid); line-height: 1.8; margin-bottom: 2rem; }
+    .info-card {
+      display: flex; align-items: flex-start; gap: 1.2rem;
+      padding: 1.2rem; margin-bottom: .8rem;
+      background: var(--off); border-left: 3px solid var(--blue);
+    }
+    .info-icon { font-size: 1.3rem; }
+    .info-title { font-weight: 500; font-size: .9rem; color: var(--navy); }
+    .info-val { font-size: .83rem; color: var(--mid); margin-top: .2rem; line-height: 1.5; }
+    .urgence-cta {
+      background: var(--orange); padding: 1.4rem 1.8rem;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 1.5rem;
+    }
+    .urgence-cta-text { color: var(--white); font-size: .8rem; font-weight: 500; }
+    .urgence-cta-text small { display: block; opacity: .75; font-weight: 300; margin-top: .2rem; }
+    .urgence-num { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--white); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,.4);
+      padding: 2.5rem 5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: .75rem; border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .footer-logo { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--white); font-size: 1rem; }
+    .footer-logo span { color: var(--orange); }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a { color: rgba(255,255,255,.35); text-decoration: none; transition: color .2s; }
+    .footer-links a:hover { color: var(--orange); }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 3rem 1.5rem 0; }
+      .hero::before { display: none; }
+      .hero-left { padding-bottom: 2rem; }
+      .hero-right { padding-bottom: 2rem; }
+      .stats-bar { grid-template-columns: 1fr 1fr; gap: 1.5rem; padding: 2rem 1.5rem; }
+      .stat-item { border-right: none; }
+      #services, #zone, #avis, #contact { padding: 4rem 1.5rem; }
+      .services-grid, .avis-grid { grid-template-columns: 1fr; }
+      .urgence-section { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
+      .zone-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BANDEAU URGENCE -->
+  <div class="urgence-bar">
+    🚨 Urgence plomberie ou électricité ? Intervention sous 1h — <a href="tel:0147400000">01 47 40 00 00</a>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <div class="logo-icon">🔧</div>
+      <div>
+        <div class="logo-text">Renard Dépannage</div>
+        <div class="logo-sub">Plomberie · Électricité</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#zone">Zone</a></li>
+      <li><a href="#avis">Avis</a></li>
+      <li><a href="#contact" class="nav-phone">📞 01 47 40 00 00</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-badge">Disponible 7j/7 · 24h/24</div>
+      <h1 class="hero-title">
+        <span class="thin">Votre artisan</span><br/>
+        de <span class="accent">confiance</span><br/>
+        à Cachan
+      </h1>
+      <p class="hero-text">Plomberie, chauffage, électricité — Marc Renard intervient chez vous rapidement, proprement, et au juste prix. Devis gratuit sous 2h.</p>
+      <div class="btn-group">
+        <a href="tel:0147400000" class="btn btn-primary">📞 Appeler maintenant</a>
+        <a href="#contact" class="btn btn-outline">Demander un devis</a>
+      </div>
+      <div class="trust-row">
+        <div class="trust-item">
+          <div class="trust-icon">✅</div>
+          <div class="trust-text"><strong>RGE Certifié</strong>Qualibat 2024</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">🛡️</div>
+          <div class="trust-text"><strong>Assuré RC Pro</strong>Garantie décennale</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">💶</div>
+          <div class="trust-text"><strong>Devis gratuit</strong>Sans engagement</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-img">
+        <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=800&q=80" alt="Artisan plombier au travail"/>
+      </div>
+      <div class="dispo-card">
+        <div>
+          <div class="dispo-title">Urgence ? On arrive.</div>
+          <div class="dispo-sub">Intervention garantie sous 1h sur Cachan et communes limitrophes</div>
+        </div>
+        <div class="dispo-num">→ 1h</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item"><div class="stat-num">15+</div><div class="stat-label">Ans d'expérience</div></div>
+    <div class="stat-item"><div class="stat-num">2 400+</div><div class="stat-label">Interventions réalisées</div></div>
+    <div class="stat-item"><div class="stat-num">4.8 ★</div><div class="stat-label">Note Google</div></div>
+    <div class="stat-item"><div class="stat-num">< 1h</div><div class="stat-label">Délai d'urgence</div></div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="reveal">
+      <p class="section-label">Nos prestations</p>
+      <h2 class="section-title">Tout ce dont vous avez<br/>besoin, <span>en un seul appel</span></h2>
+    </div>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="s-icon">🚿</div>
+        <div class="s-name">Plomberie générale</div>
+        <div class="s-desc">Fuite d'eau, canalisation bouchée, remplacement de robinetterie, installation sanitaire — nous intervenons sur toutes vos installations.</div>
+        <a href="#contact" class="s-link">Demander un devis →</a>
+      </div>
+      <div class="service-card">
+        <div class="s-icon">🔥</div>
+        <div class="s-name">Chauffage & Chaudière</div>
+        <div class="s-desc">Entretien annuel, dépannage, remplacement de chaudière gaz ou fioul, installation de radiateurs et plancher chauffant.</div>
+        <a href="#contact" class="s-link">Demander un devis →</a>
+      </div>
+      <div class="service-card">
+        <div class="s-icon">⚡</div>
+        <div class="s-name">Électricité</div>
+        <div class="s-desc">Mise aux normes, tableau électrique, prises, interrupteurs, éclairage, dépannage panne générale — travaux certifiés Consuel.</div>
+        <a href="#contact" class="s-link">Demander un devis →</a>
+      </div>
+      <div class="service-card">
+        <div class="s-icon">🛁</div>
+        <div class="s-name">Rénovation salle de bain</div>
+        <div class="s-desc">Pose de carrelage, installation de douche à l'italienne, baignoire, meuble vasque — rénovation complète clé en main.</div>
+        <a href="#contact" class="s-link">Demander un devis →</a>
+      </div>
+      <div class="service-card">
+        <div class="s-icon">❄️</div>
+        <div class="s-name">Climatisation & VMC</div>
+        <div class="s-desc">Installation et entretien de climatiseurs, pompes à chaleur et systèmes de ventilation. Éligible aux aides MaPrimeRénov'.</div>
+        <a href="#contact" class="s-link">Demander un devis →</a>
+      </div>
+      <div class="service-card">
+        <div class="s-icon">🚨</div>
+        <div class="s-name">Dépannage d'urgence 24h</div>
+        <div class="s-desc">Fuite importante, panne de chauffage en hiver, court-circuit — nous sommes disponibles 7j/7, 24h/24 pour les urgences.</div>
+        <a href="tel:0147400000" class="s-link" style="color:var(--orange)">Appeler maintenant →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- URGENCE SECTION -->
+  <div class="urgence-section">
+    <div class="reveal">
+      <h2>Une urgence ?<br/>On est là <span class="accent">maintenant.</span></h2>
+      <p>Une fuite qui inonde votre appartement, une panne de chauffage en plein hiver, une coupure électrique — certaines situations ne peuvent pas attendre. C'est pour ça que nous sommes disponibles à toute heure.</p>
+      <a href="tel:0147400000" class="btn btn-primary" style="font-size:.85rem;">📞 Appeler le 01 47 40 00 00</a>
+    </div>
+    <div class="urgence-steps reveal">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content"><div class="step-title">Vous appelez</div><div class="step-sub">Disponible 7j/7, 24h/24 — quelqu'un décroche toujours</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content"><div class="step-title">On évalue la situation</div><div class="step-sub">En 2 minutes, on comprend votre problème et on vous dit ce qu'on peut faire</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content"><div class="step-title">On intervient</div><div class="step-sub">Sous 1h sur Cachan — avec le matériel adapté</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content"><div class="step-title">Problème résolu</div><div class="step-sub">Travail propre, facture transparente, garantie incluse</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONE D'INTERVENTION -->
+  <section id="zone">
+    <div class="zone-grid">
+      <div class="reveal">
+        <p class="section-label">Zone d'intervention</p>
+        <h2 class="section-title">Cachan et<br/><span>toutes les communes</span><br/>limitrophes</h2>
+        <p style="color:var(--mid); line-height:1.8; margin-bottom:1.5rem; font-size:.9rem;">Basé à Cachan depuis 2009, Marc Renard intervient dans un rayon de 15 km autour de la ville. Pas de frais de déplacement supplémentaires dans la zone ci-dessous.</p>
+        <div class="zone-cities">
+          <span class="city-tag main">Cachan ⭐</span>
+          <span class="city-tag">Arcueil</span>
+          <span class="city-tag">Gentilly</span>
+          <span class="city-tag">Kremlin-Bicêtre</span>
+          <span class="city-tag">Villejuif</span>
+          <span class="city-tag">L'Haÿ-les-Roses</span>
+          <span class="city-tag">Bagneux</span>
+          <span class="city-tag">Montrouge</span>
+          <span class="city-tag">Chevilly-Larue</span>
+          <span class="city-tag">Fresnes</span>
+        </div>
+      </div>
+      <div class="zone-map reveal">
+        <div class="map-placeholder">
+          <span class="map-pin">📍</span>
+          <strong style="color:var(--navy); font-size:1.1rem;">Cachan, Val-de-Marne</strong>
+          <p style="font-size:.8rem; margin-top:.5rem;">Zone couverte : 15 km autour</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AVIS -->
+  <section id="avis">
+    <div class="avis-header reveal">
+      <div>
+        <p class="section-label">Avis clients</p>
+        <h2 class="section-title">Ce que disent <span>nos clients</span></h2>
+      </div>
+      <div class="rating-big">
+        <div class="rating-num">4.8</div>
+        <div class="rating-stars">★★★★★</div>
+        <div class="rating-count">127 avis Google</div>
+      </div>
+    </div>
+    <div class="avis-grid reveal">
+      <div class="avis-card">
+        <div class="avis-stars">★★★★★</div>
+        <div class="avis-text">"Fuite sous l'évier un dimanche soir. Marc est arrivé en 45 minutes, il a tout réparé en une heure. Propre, efficace, et le prix était honnête. Je recommande sans hésiter."</div>
+        <div class="avis-author">Pierre M.</div>
+        <div class="avis-info">Cachan · Urgence plomberie · Il y a 3 semaines</div>
+      </div>
+      <div class="avis-card">
+        <div class="avis-stars">★★★★★</div>
+        <div class="avis-text">"Remplacement complet du tableau électrique. Devis clair, travail soigné, il a tout expliqué. Très professionnel et ponctuel. Je le recommande à tous mes voisins."</div>
+        <div class="avis-author">Nathalie B.</div>
+        <div class="avis-info">Arcueil · Mise aux normes électricité · Il y a 1 mois</div>
+      </div>
+      <div class="avis-card">
+        <div class="avis-stars">★★★★★</div>
+        <div class="avis-text">"Notre chaudière est tombée en panne en janvier. Appel le matin, intervention l'après-midi, chauffage rétabli le soir même. Tarif correct et très bon contact. Merci !"</div>
+        <div class="avis-author">Famille Durand</div>
+        <div class="avis-info">Villejuif · Dépannage chaudière · Il y a 2 mois</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-grid">
+      <div class="reveal">
+        <p class="section-label">Contact & Devis</p>
+        <h2 class="section-title">Demandez votre<br/><span>devis gratuit</span></h2>
+        <p style="color:var(--mid);line-height:1.8;margin:1rem 0 2rem;font-size:.9rem;">Décrivez votre besoin et recevez un devis détaillé sous 2h, sans engagement de votre part.</p>
+        <div class="info-card">
+          <div class="info-icon">📞</div>
+          <div><div class="info-title">Téléphone</div><div class="info-val">01 47 40 00 00<br/>7j/7 de 7h à 21h (urgences 24h)</div></div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">📧</div>
+          <div><div class="info-title">E-mail</div><div class="info-val">contact@renard-depannage.fr<br/>Réponse sous 24h</div></div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">📍</div>
+          <div><div class="info-title">Adresse</div><div class="info-val">Basé à Cachan (94230)<br/>Intervention sans frais de déplacement</div></div>
+        </div>
+        <div class="urgence-cta">
+          <div class="urgence-cta-text">Urgence ? Appelez directement<small>Disponible 7j/7, 24h/24</small></div>
+          <div class="urgence-num">01 47 40 00 00</div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="contact-form">
+          <div class="form-row">
+            <input type="text" placeholder="Prénom"/>
+            <input type="text" placeholder="Nom"/>
+          </div>
+          <input type="tel" placeholder="Téléphone"/>
+          <input type="email" placeholder="E-mail"/>
+          <select>
+            <option disabled selected value="">Type de prestation</option>
+            <option>Plomberie — dépannage</option>
+            <option>Plomberie — installation</option>
+            <option>Électricité</option>
+            <option>Chauffage / Chaudière</option>
+            <option>Rénovation salle de bain</option>
+            <option>Climatisation / VMC</option>
+            <option>Urgence (24h)</option>
+            <option>Autre</option>
+          </select>
+          <select>
+            <option disabled selected value="">Degré d'urgence</option>
+            <option>Urgent (aujourd'hui)</option>
+            <option>Rapide (cette semaine)</option>
+            <option>Planifié (devis)</option>
+          </select>
+          <textarea rows="4" placeholder="Décrivez votre problème en quelques mots..."></textarea>
+          <button class="btn-submit" onclick="this.textContent='Demande envoyée ✓'; this.style.background='#2a7a3a'">
+            Envoyer ma demande de devis
+          </button>
+          <p style="font-size:.72rem; color:var(--mid); text-align:center;">Réponse garantie sous 2h · Devis gratuit · Sans engagement</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Renard <span>Dépannage</span></div>
+    <div class="footer-links">
+      <a href="#">Mentions légales</a>
+      <a href="#">Politique de confidentialité</a>
+      <a href="#">Plan du site</a>
+    </div>
+    <div>© 2024 Renard Dépannage · Cachan (94230)</div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
