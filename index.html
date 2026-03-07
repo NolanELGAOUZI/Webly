@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Webly — Création de sites web pour commerçants</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black:  #080a0f;
+      --dark:   #0f1319;
+      --card:   #151b24;
+      --border: rgba(255,255,255,.07);
+      --white:  #ffffff;
+      --off:    #a8b4c4;
+      --cyan:   #00d4ff;
+      --green:  #00e676;
+      --grad:   linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    body::after {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 9997; opacity: .025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 5rem; transition: background .3s;
+    }
+    nav.scrolled {
+      background: rgba(8,10,15,.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: .12em; color: var(--white); text-decoration: none; }
+    .nav-logo span { color: var(--cyan); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--off); font-size: .8rem; letter-spacing: .15em; text-transform: uppercase; transition: color .2s; }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-cta { background: var(--grad); color: var(--black) !important; padding: .5rem 1.4rem; font-weight: 600 !important; letter-spacing: .1em !important; font-size: .78rem !important; }
+    .nav-cta:hover { opacity: .85; }
+
+    /* ── HERO ── */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 8rem 5rem 5rem; position: relative; overflow: hidden; }
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(0,212,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at 60% 40%, black 30%, transparent 80%);
+    }
+    .hero-glow { position: absolute; width: 700px; height: 700px; border-radius: 50%; pointer-events: none; background: radial-gradient(circle, rgba(0,212,255,.08) 0%, transparent 70%); top: -100px; right: -100px; }
+    .hero-content { position: relative; z-index: 2; max-width: 900px; }
+    .hero-tag { display: inline-flex; align-items: center; gap: .6rem; border: 1px solid rgba(0,212,255,.3); padding: .35rem 1rem; font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--cyan); margin-bottom: 2.5rem; }
+    .tag-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+    .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 10vw, 10rem); line-height: .92; letter-spacing: .04em; margin-bottom: 2rem; }
+    .hero-title .line2 { color: var(--cyan); }
+    .hero-title .line3 { color: rgba(255,255,255,.18); }
+    .hero-sub { font-size: clamp(.95rem, 1.5vw, 1.1rem); color: var(--off); line-height: 1.8; max-width: 520px; margin-bottom: 3rem; }
+    .hero-sub strong { color: var(--white); font-weight: 500; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+    .btn { display: inline-flex; align-items: center; gap: .6rem; padding: .9rem 2rem; font-family: 'Outfit', sans-serif; font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; font-weight: 500; transition: all .22s; }
+    .btn-primary { background: var(--grad); color: var(--black); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,212,255,.3); }
+    .btn-ghost { border: 1px solid var(--border); color: var(--off); }
+    .btn-ghost:hover { border-color: rgba(0,212,255,.4); color: var(--cyan); }
+    .hero-scroll { position: absolute; bottom: 2.5rem; left: 5rem; display: flex; align-items: center; gap: .8rem; font-size: .65rem; letter-spacing: .25em; text-transform: uppercase; color: var(--off); }
+    .scroll-line { width: 40px; height: 1px; background: var(--border); }
+
+    /* ── SECTIONS ── */
+    section { padding: 7rem 5rem; }
+    .s-label { font-size: .65rem; letter-spacing: .35em; text-transform: uppercase; color: var(--cyan); margin-bottom: .8rem; }
+    .s-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 5vw, 5rem); letter-spacing: .05em; line-height: 1; margin-bottom: 1rem; }
+    .s-title span { color: var(--cyan); }
+    .s-sub { color: var(--off); font-size: .95rem; line-height: 1.8; max-width: 560px; }
+
+    /* ── POURQUOI MOI ── */
+    #pourquoi { background: var(--dark); }
+    .pourquoi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .features { display: flex; flex-direction: column; gap: 1rem; margin-top: 2.5rem; }
+    .feature { display: flex; gap: 1.2rem; align-items: flex-start; padding: 1.4rem; background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--cyan); transition: background .2s, transform .2s; }
+    .feature:hover { background: rgba(0,212,255,.04); transform: translateX(4px); }
+    .feat-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .feat-title { font-weight: 500; font-size: .95rem; margin-bottom: .3rem; }
+    .feat-desc { font-size: .83rem; color: var(--off); line-height: 1.6; }
+    .pourquoi-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .stat-card { background: var(--card); border: 1px solid var(--border); padding: 2rem; text-align: center; transition: border-color .2s, transform .2s; }
+    .stat-card:hover { border-color: rgba(0,212,255,.3); transform: translateY(-3px); }
+    .stat-card:first-child { grid-column: 1/-1; }
+    .stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; color: var(--cyan); letter-spacing: .05em; }
+    .stat-card:first-child .stat-val { font-size: 5rem; }
+    .stat-label { font-size: .75rem; color: var(--off); letter-spacing: .12em; text-transform: uppercase; margin-top: .3rem; }
+
+    /* ── PORTFOLIO ── */
+    #portfolio { background: var(--black); }
+    .portfolio-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3.5rem; }
+    .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .project-card { background: var(--card); border: 1px solid var(--border); overflow: hidden; transition: border-color .3s, transform .3s; }
+    .project-card:hover { border-color: rgba(0,212,255,.35); transform: translateY(-5px); }
+    .project-preview { width: 100%; height: 220px; overflow: hidden; position: relative; background: #0a0e14; }
+    .project-preview iframe { width: 160%; height: 160%; transform: scale(0.625); transform-origin: top left; pointer-events: none; border: none; }
+    .project-preview-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 50%, var(--card) 100%); }
+    .project-info { padding: 1.5rem; }
+    .project-tag { display: inline-block; font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(0,212,255,.25); padding: .2rem .6rem; margin-bottom: .8rem; }
+    .project-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: .05em; margin-bottom: .4rem; }
+    .project-desc { font-size: .82rem; color: var(--off); line-height: 1.6; margin-bottom: 1.2rem; }
+    .project-link { display: inline-flex; align-items: center; gap: .4rem; font-size: .75rem; letter-spacing: .15em; text-transform: uppercase; color: var(--cyan); text-decoration: none; font-weight: 500; transition: gap .2s; }
+    .project-link:hover { gap: .8rem; }
+
+    /* ── OFFRES ── */
+    #offres { background: var(--dark); }
+    .offres-header { text-align: center; margin-bottom: 4rem; }
+    .offres-header .s-sub { margin: 0 auto; }
+    .offres-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1000px; margin: 0 auto; }
+    .offre-card { background: var(--card); border: 1px solid var(--border); padding: 2.5rem; position: relative; transition: border-color .25s, transform .25s; }
+    .offre-card:hover { border-color: rgba(0,212,255,.3); transform: translateY(-4px); }
+    .offre-card.featured { border-color: var(--cyan); background: linear-gradient(135deg, rgba(0,212,255,.06) 0%, var(--card) 100%); }
+    .offre-badge { position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: var(--grad); color: var(--black); font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; padding: .25rem .9rem; font-weight: 600; white-space: nowrap; }
+    .offre-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: .06em; margin-bottom: .4rem; }
+    .offre-price { font-family: 'Bebas Neue', sans-serif; font-size: 3.2rem; color: var(--cyan); line-height: 1; }
+    .offre-price-sub { font-size: .75rem; color: var(--off); margin-top: .2rem; margin-bottom: 1.8rem; }
+    .offre-sep { height: 1px; background: var(--border); margin-bottom: 1.8rem; }
+    .offre-features { display: flex; flex-direction: column; gap: .7rem; margin-bottom: 2rem; }
+    .offre-feat { display: flex; align-items: flex-start; gap: .7rem; font-size: .85rem; color: var(--off); }
+    .offre-feat::before { content: '→'; color: var(--cyan); flex-shrink: 0; }
+    .offre-feat.no { color: rgba(255,255,255,.25); }
+    .offre-feat.no::before { content: '—'; color: rgba(255,255,255,.2); }
+    .btn-offre { display: block; text-align: center; padding: .85rem; font-size: .78rem; letter-spacing: .15em; text-transform: uppercase; font-weight: 500; text-decoration: none; transition: all .22s; }
+    .btn-offre-primary { background: var(--grad); color: var(--black); }
+    .btn-offre-primary:hover { opacity: .85; }
+    .btn-offre-ghost { border: 1px solid var(--border); color: var(--off); }
+    .btn-offre-ghost:hover { border-color: rgba(0,212,255,.4); color: var(--cyan); }
+
+    /* ── PROCESS ── */
+    #process { background: var(--black); }
+    .process-header { text-align: center; margin-bottom: 4rem; }
+    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; max-width: 1000px; margin: 0 auto; }
+    .process-steps::before { content: ''; position: absolute; top: 2.2rem; left: 10%; right: 10%; height: 1px; background: linear-gradient(to right, transparent, var(--cyan), transparent); }
+    .process-step { padding: 0 1.5rem; text-align: center; }
+    .step-num { width: 44px; height: 44px; border-radius: 50%; background: var(--card); border: 1px solid var(--cyan); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: var(--cyan); margin: 0 auto 1.5rem; position: relative; z-index: 2; }
+    .step-title { font-weight: 600; font-size: .95rem; margin-bottom: .5rem; }
+    .step-desc { font-size: .82rem; color: var(--off); line-height: 1.6; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--dark); }
+    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; max-width: 1000px; margin: 0 auto; }
+    .contact-left p { color: var(--off); line-height: 1.8; font-size: .95rem; margin-top: 1rem; margin-bottom: 2.5rem; }
+    .contact-pill { display: flex; align-items: center; gap: 1rem; background: var(--card); border: 1px solid var(--border); padding: 1.1rem 1.4rem; margin-bottom: .8rem; transition: border-color .2s; }
+    .contact-pill:hover { border-color: rgba(0,212,255,.3); }
+    .pill-icon { font-size: 1.1rem; }
+    .pill-label { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--off); }
+    .pill-val { font-size: .9rem; color: var(--white); }
+
+    /* Le formulaire est maintenant un vrai <form> pointant vers Formspree */
+    .contact-form { display: flex; flex-direction: column; gap: .9rem; }
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--white); padding: .9rem 1.2rem;
+      font-family: 'Outfit', sans-serif; font-size: .88rem;
+      outline: none; transition: border-color .2s; width: 100%; resize: vertical;
+    }
+    .contact-form input:focus,
+    .contact-form select:focus,
+    .contact-form textarea:focus { border-color: rgba(0,212,255,.5); }
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder { color: rgba(255,255,255,.2); }
+    .contact-form select option { background: var(--dark); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+    .btn-send { background: var(--grad); color: var(--black); border: none; padding: 1rem; font-family: 'Outfit', sans-serif; font-size: .8rem; letter-spacing: .15em; text-transform: uppercase; cursor: pointer; font-weight: 600; transition: opacity .2s, transform .2s; width: 100%; }
+    .btn-send:hover { opacity: .88; transform: translateY(-1px); }
+    .form-success { display: none; text-align: center; padding: 2rem; background: rgba(0,230,118,.08); border: 1px solid rgba(0,230,118,.3); color: var(--green); font-size: .9rem; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--black); border-top: 1px solid var(--border); padding: 2.5rem 5rem; display: flex; justify-content: space-between; align-items: center; font-size: .75rem; color: var(--off); }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--white); letter-spacing: .1em; }
+    .footer-logo span { color: var(--cyan); }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a { color: var(--off); text-decoration: none; transition: color .2s; }
+    .footer-links a:hover { color: var(--cyan); }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 1; transform: none; transition: opacity .65s ease, transform .65s ease; }
+    .js-ready .reveal { opacity: 0; transform: translateY(22px); }
+    .js-ready .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      nav, .hero, section, footer { padding-left: 2rem; padding-right: 2rem; }
+      .hero { padding-top: 7rem; }
+      .nav-links { display: none; }
+      .pourquoi-grid, .contact-wrap { grid-template-columns: 1fr; gap: 3rem; }
+      .portfolio-grid, .offres-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
+      .process-steps { grid-template-columns: 1fr 1fr; gap: 3rem; }
+      .process-steps::before { display: none; }
+      footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">WEB<span>LY</span></a>
+    <ul class="nav-links">
+      <li><a href="#pourquoi">Pourquoi moi</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#offres">Tarifs</a></li>
+      <li><a href="#process">Comment ça marche</a></li>
+      <li><a href="#contact" class="nav-cta">Me contacter</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="hero-tag">
+        <span class="tag-dot"></span>
+        Disponible · Création de sites web pour commerçants
+      </div>
+      <h1 class="hero-title">
+        VOTRE COMMERCE<br/>
+        <span class="line2">MÉRITE UN</span><br/>
+        <span class="line3">VRAI SITE WEB</span>
+      </h1>
+      <p class="hero-sub">
+        Je crée des sites web <strong>professionnels et modernes</strong> pour les commerçants et indépendants. Abordable, sans prise de tête, 100% en ligne.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Demander un devis gratuit →</a>
+        <a href="#portfolio" class="btn btn-ghost">Voir mes réalisations</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Découvrir
+    </div>
+  </div>
+
+  <!-- POURQUOI MOI -->
+  <section id="pourquoi">
+    <div class="pourquoi-grid">
+      <div class="reveal">
+        <p class="s-label">Pourquoi me choisir</p>
+        <h2 class="s-title">SIMPLE.<br/><span>HUMAIN.</span><br/>ABORDABLE.</h2>
+        <p class="s-sub">Contrairement aux grandes agences, je connais la réalité des petits commerces et des indépendants. Tout se passe par email, sans déplacement, sans jargon technique.</p>
+        <div class="features">
+          <div class="feature">
+            <div class="feat-icon">📍</div>
+            <div>
+              <div class="feat-title">Prestataire de proximité</div>
+              <div class="feat-desc">Pas d'intermédiaire, vous avez un contact direct et humain. Je connais les besoins spécifiques des petits indépendants.</div>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feat-icon">⚡</div>
+            <div>
+              <div class="feat-title">100% en ligne, zéro déplacement</div>
+              <div class="feat-desc">Tout se passe par email, de la demande à la livraison. Simple, rapide, sans contrainte pour vous.</div>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feat-icon">💬</div>
+            <div>
+              <div class="feat-title">Suivi inclus après livraison</div>
+              <div class="feat-desc">Besoin de changer un texte, une photo, un horaire ? Je reste disponible après la mise en ligne.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pourquoi-visual reveal reveal-delay-2">
+        <div class="stat-card">
+          <div class="stat-val">97%</div>
+          <div class="stat-label">Clients satisfaits à la livraison</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">100%</div>
+          <div class="stat-label">En ligne, sans déplacement</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">3×</div>
+          <div class="stat-label">Moins cher qu'une agence</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">0€</div>
+          <div class="stat-label">Devis, toujours gratuit</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio">
+    <div class="portfolio-header reveal">
+      <div>
+        <p class="s-label">Portfolio</p>
+        <h2 class="s-title">MES <span>RÉALISATIONS</span></h2>
+      </div>
+      <a href="#contact" class="btn btn-ghost" style="font-size:.75rem;">Votre secteur n'y est pas ? →</a>
+    </div>
+    <div class="portfolio-grid">
+      <div class="project-card reveal">
+        <div class="project-preview">
+          <iframe src="restaurant-demo.html" title="Restaurant Le Sillon" loading="lazy"></iframe>
+          <div class="project-preview-overlay"></div>
+        </div>
+        <div class="project-info">
+          <span class="project-tag">Restauration</span>
+          <div class="project-name">Le Sillon</div>
+          <div class="project-desc">Site vitrine gastronomique avec carte interactive, galerie photo et formulaire de réservation.</div>
+          <a href="restaurant-demo.html" target="_blank" class="project-link">Voir le site complet →</a>
+        </div>
+      </div>
+      <div class="project-card reveal reveal-delay-1">
+        <div class="project-preview">
+          <iframe src="coiffeur-demo.html" title="Studio Éclat" loading="lazy"></iframe>
+          <div class="project-preview-overlay"></div>
+        </div>
+        <div class="project-info">
+          <span class="project-tag">Beauté & Bien-être</span>
+          <div class="project-name">Studio Éclat</div>
+          <div class="project-desc">Salon de coiffure avec présentation de l'équipe, avis clients et prise de rendez-vous en ligne.</div>
+          <a href="coiffeur-demo.html" target="_blank" class="project-link">Voir le site complet →</a>
+        </div>
+      </div>
+      <div class="project-card reveal reveal-delay-2">
+        <div class="project-preview">
+          <iframe src="artisan-demo.html" title="Renard Dépannage" loading="lazy"></iframe>
+          <div class="project-preview-overlay"></div>
+        </div>
+        <div class="project-info">
+          <span class="project-tag">Artisan</span>
+          <div class="project-name">Renard Dépannage</div>
+          <div class="project-desc">Site artisan axé conversion : urgences en évidence, zone d'intervention et formulaire de devis rapide.</div>
+          <a href="artisan-demo.html" target="_blank" class="project-link">Voir le site complet →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OFFRES -->
+  <section id="offres">
+    <div class="offres-header reveal">
+      <p class="s-label">Tarifs transparents</p>
+      <h2 class="s-title">DES OFFRES <span>CLAIRES</span></h2>
+      <p class="s-sub">Pas de mauvaise surprise. Vous savez exactement ce que vous payez avant de commencer.</p>
+    </div>
+    <div class="offres-grid">
+      <div class="offre-card reveal">
+        <div class="offre-name">Essentiel</div>
+        <div class="offre-price">199€</div>
+        
+        <div class="offre-sep"></div>
+        <div class="offre-features">
+          <div class="offre-feat">Site 1 page (landing page)</div>
+          <div class="offre-feat">Design moderne sur-mesure</div>
+          <div class="offre-feat">Adapté mobile & tablette</div>
+          <div class="offre-feat">Formulaire de contact</div>
+          <div class="offre-feat">Mise en ligne incluse</div>
+          <div class="offre-feat no">Galerie photos</div>
+          <div class="offre-feat no">Maintenance mensuelle</div>
+        </div>
+        <a href="#contact" class="btn-offre btn-offre-ghost">Choisir cette offre</a>
+      </div>
+      <div class="offre-card featured reveal reveal-delay-1">
+        <div class="offre-badge">⭐ Le plus populaire</div>
+        <div class="offre-name">Pro</div>
+        <div class="offre-price">349€</div>
+        
+        <div class="offre-sep"></div>
+        <div class="offre-features">
+          <div class="offre-feat">Site 3 à 5 pages</div>
+          <div class="offre-feat">Design premium sur-mesure</div>
+          <div class="offre-feat">Adapté mobile & tablette</div>
+          <div class="offre-feat">Formulaire de contact</div>
+          <div class="offre-feat">Mise en ligne incluse</div>
+          <div class="offre-feat">Galerie photos</div>
+          <div class="offre-feat">Référencement local (SEO)</div>
+        </div>
+        <a href="#contact" class="btn-offre btn-offre-primary">Choisir cette offre</a>
+      </div>
+      <div class="offre-card reveal reveal-delay-2">
+        <div class="offre-name">Sur Mesure</div>
+        <div class="offre-price">Sur devis</div>
+        <div class="offre-price-sub">Devis gratuit</div>
+        <div class="offre-sep"></div>
+        <div class="offre-features">
+          <div class="offre-feat">Pages illimitées</div>
+          <div class="offre-feat">Fonctionnalités spécifiques</div>
+          <div class="offre-feat">Réservation en ligne</div>
+          <div class="offre-feat">Boutique e-commerce</div>
+          <div class="offre-feat">Multilingue</div>
+          <div class="offre-feat">Maintenance mensuelle incluse</div>
+          <div class="offre-feat">Accompagnement complet</div>
+        </div>
+        <a href="#contact" class="btn-offre btn-offre-ghost">Demander un devis</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="process-header reveal">
+      <p class="s-label">Comment ça marche</p>
+      <h2 class="s-title">VOTRE SITE EN <span>4 ÉTAPES</span></h2>
+    </div>
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <div class="step-num">01</div>
+        <div class="step-title">Vous m'écrivez</div>
+        <div class="step-desc">Un simple email suffit pour décrire votre activité et vos besoins.</div>
+      </div>
+      <div class="process-step reveal reveal-delay-1">
+        <div class="step-num">02</div>
+        <div class="step-title">Devis & Validation</div>
+        <div class="step-desc">Je vous envoie un devis clair et gratuit. Vous validez, on démarre. Aucun engagement avant.</div>
+      </div>
+      <div class="process-step reveal reveal-delay-2">
+        <div class="step-num">03</div>
+        <div class="step-title">Création du site</div>
+        <div class="step-desc">Je conçois votre site à votre image. Vous pouvez demander des ajustements à tout moment par email.</div>
+      </div>
+      <div class="process-step reveal reveal-delay-3">
+        <div class="step-num">04</div>
+        <div class="step-title">Mise en ligne 🚀</div>
+        <div class="step-desc">Votre site est en ligne avec votre nom de domaine. Je reste disponible pour toute modification future.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-wrap">
+      <div class="contact-left reveal">
+        <p class="s-label">Contact</p>
+        <h2 class="s-title">PARLONS DE <span>VOTRE PROJET</span></h2>
+        <p>Vous avez une question, vous voulez un devis, ou simplement savoir si un site web peut vous apporter plus de clients ? Remplissez le formulaire ou écrivez-moi directement.</p>
+        <div class="contact-pill">
+          <div class="pill-icon">📧</div>
+          <div>
+            <div class="pill-label">Email direct</div>
+            <div class="pill-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4c2223202d226229202b2d233936250c2b212d2520622f2321">[email&#160;protected]</a></div>
+          </div>
+        </div>
+        <div class="contact-pill">
+          <div class="pill-icon">🌍</div>
+          <div>
+            <div class="pill-label">Zone d'intervention</div>
+            <div class="pill-val">Partout en France · 100% en ligne</div>
+          </div>
+        </div>
+        <div class="contact-pill">
+          <div class="pill-icon">💶</div>
+          <div>
+            <div class="pill-label">Devis</div>
+            <div class="pill-val">100% gratuit · Sans engagement</div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <!--
+          Formulaire connecté à Formspree.
+          Quand un visiteur soumet ce formulaire, Formspree reçoit les données
+          et les transfère automatiquement à nolan.elgaouzi@gmail.com.
+          Aucun serveur à gérer de ton côté.
+        -->
+        <form
+          class="contact-form"
+          action="https://formspree.io/f/xjgavnye"
+          method="POST"
+          id="contactForm"
+        >
+          <div class="form-row">
+            <!-- name="prenom" et name="nom" = les étiquettes dans l'email reçu -->
+            <input type="text" name="prenom" placeholder="Votre prénom" required/>
+            <input type="text" name="nom" placeholder="Votre nom" required/>
+          </div>
+          <input type="text" name="commerce" placeholder="Nom de votre commerce"/>
+          <input type="email" name="email" placeholder="Votre e-mail" required/>
+          <select name="secteur">
+            <option value="" disabled selected>Votre secteur d'activité</option>
+            <option>Restaurant / Bar / Café</option>
+            <option>Coiffeur / Esthéticien</option>
+            <option>Artisan (plombier, électricien…)</option>
+            <option>Boutique / Commerce</option>
+            <option>Professionnel de santé</option>
+            <option>Autre</option>
+          </select>
+          <select name="offre">
+            <option value="" disabled selected>Offre qui vous intéresse</option>
+            <option>Essentiel — 199€</option>
+            <option>Pro — 349€</option>
+            <option>Sur Mesure — Devis gratuit</option>
+            <option>Je ne sais pas encore</option>
+          </select>
+          <textarea name="message" rows="3" placeholder="Décrivez votre projet en quelques mots (facultatif)..."></textarea>
+          <button type="submit" class="btn-send">Envoyer ma demande →</button>
+          <p style="font-size:.72rem; color:var(--off); text-align:center; margin-top:.3rem;">Devis 100% gratuit · Sans engagement</p>
+        </form>
+        <!-- Message de confirmation après envoi réussi -->
+        <div class="form-success" id="formSuccess">
+          ✓ Message envoyé ! Je vous réponds dès que possible.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">WEB<span>LY</span></div>
+    <div class="footer-links">
+      <a href="#portfolio">Portfolio</a>
+      <a href="#offres">Tarifs</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div>© 2026 Webly · Création de sites web</div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // Nav : fond au scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Reveal au scroll + fallback pour les prévisualisations
+    // Activer les animations seulement si JS tourne bien
+    document.documentElement.classList.add('js-ready');
+    const reveals = document.querySelectorAll('.reveal');
+
+    // IntersectionObserver pour animer au scroll
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.05 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Fallback immédiat : rend visible tout ce qui est déjà dans le viewport
+    function revealVisible() {
+      reveals.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) el.classList.add('visible');
+      });
+    }
+    revealVisible();
+    // Fallback ultime : tout afficher après 800ms quoi qu'il arrive
+    setTimeout(() => reveals.forEach(el => el.classList.add('visible')), 800);
+    // Re-check après chargement complet des iframes
+    window.addEventListener('load', revealVisible);
+
+    // Gestion de la soumission Formspree :
+    // On intercepte le submit pour afficher un message de succès
+    // au lieu de rediriger vers la page de confirmation Formspree.
+    const form = document.getElementById('contactForm');
+    const successMsg = document.getElementById('formSuccess');
+    if (form) {
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault(); // on empêche la redirection native
+        const btn = form.querySelector('.btn-send');
+        btn.textContent = 'Envoi en cours…';
+        btn.disabled = true;
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+          });
+
+          if (response.ok) {
+            // Succès : on cache le formulaire et on montre le message vert
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+          } else {
+            // Erreur serveur : on remet le bouton normal
+            btn.textContent = 'Envoyer ma demande →';
+            btn.disabled = false;
+            alert('Une erreur est survenue. Merci de m\'écrire directement à nolan.elgaouzi@gmail.com');
+          }
+        } catch (err) {
+          
