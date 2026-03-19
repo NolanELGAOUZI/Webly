@@ -111,7 +111,7 @@
     /* ── PORTFOLIO ── */
     #portfolio { background: var(--black); }
     .portfolio-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3.5rem; }
-    .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .portfolio-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
     .project-card { background: var(--card); border: 1px solid var(--border); overflow: hidden; transition: border-color .3s, transform .3s; }
     .project-card:hover { border-color: rgba(0,212,255,.35); transform: translateY(-5px); }
     .project-preview { width: 100%; height: 220px; overflow: hidden; position: relative; background: #0a0e14; }
@@ -209,6 +209,9 @@
     .reveal-delay-3 { transition-delay: .3s; }
 
     /* ── RESPONSIVE ── */
+    @media (max-width: 1200px) {
+      .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+    }
     @media (max-width: 1024px) {
       nav, .hero, section, footer { padding-left: 2rem; padding-right: 2rem; }
       .hero { padding-top: 7rem; }
@@ -359,6 +362,18 @@
           <div class="project-name">Renard Dépannage</div>
           <div class="project-desc">Site artisan axé conversion : urgences en évidence, zone d'intervention et formulaire de devis rapide.</div>
           <a href="artisan-demo.html" target="_blank" class="project-link">Voir le site complet →</a>
+        </div>
+      </div>
+      <div class="project-card reveal reveal-delay-3">
+        <div class="project-preview">
+          <iframe src="villa-carthage-demo.html" title="Villa Carthage" loading="lazy"></iframe>
+          <div class="project-preview-overlay"></div>
+        </div>
+        <div class="project-info">
+          <span class="project-tag">Restaurant</span>
+          <div class="project-name">Villa Carthage</div>
+          <div class="project-desc">Site vitrine pour un restaurant tunisien : carte complète, galerie photo et avis Google intégrés.</div>
+          <a href="villa-carthage-demo.html" target="_blank" class="project-link">Voir le site complet →</a>
         </div>
       </div>
     </div>
